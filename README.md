@@ -48,12 +48,12 @@ Design Pattern 筆記
 
 ### 例子
 ```java
-interface CarFactory {
+interface CarAbstractFactory {
   public Car createWheel();
   public Engine createEngine();
 }
 
-class JapanCarFactory implements CarFactory {
+class JapanCarFactory implements CarAbstractFactory {
    public Car createTier() {
       return new JapanWheel();
    }
@@ -63,7 +63,7 @@ class JapanCarFactory implements CarFactory {
    };
 }
 
-class USACarFactory implements CarFactory {
+class USACarFactory implements CarAbstractFactory {
    public Car createWheel() {
       return new USAWheel();
    }
@@ -74,3 +74,99 @@ class USACarFactory implements CarFactory {
 } 
  
 ```
+
+## Builder
+### 目的
+將建立／創造複雜的 object 抽離，使得相同的「工序」能建立擁有不同設置／參數的 object
+
+### 使用時機
+1. 建立 object 的邏輯（logic, algorithm）應獨立於 object 本身的建構方式（construct）及其參數（parameters）
+2. 可建立擁有不同設置／參數的 object
+
+
+### UML
+![圖片](https://user-images.githubusercontent.com/71750702/226191654-ffe8916b-fc06-45a0-b8af-35c1cc561d38.png)
+
+
+### 例子
+
+1. Construct with parameters
+    ```java
+    class Human {
+        private string name;
+        private int age;
+
+        public Human(string name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+    }
+
+    public HumanBuilder {
+        private string name;
+        private int age;
+
+        // optional, assign default value for fields
+        public HumanBuilder() {
+            this.name = "John Doe";
+            this.age = 30;
+        }
+
+        public Human(HumanBuilder builder) {
+            this.name = builder.name;
+            this.age = builder.age;
+        }
+
+        public HumanBuilder setName(string name) {
+            this.name = name;
+            return this;
+        }
+
+        public HumanBuilder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public Human getHuman() {
+            return Human(this.name, this.age);
+        }
+    }
+    ```
+
+2. Construct with builder
+    ```java
+    class Human {
+        private string name;
+        private int age;
+
+        public Human(HumanBuilder builder) {
+            this.name = builder.name;
+            this.age = builder.age;
+        }
+    }
+
+    public HumanBuilder {
+        public string name;
+        public int age;
+
+        // optional, assign default value for fields
+        public HumanBuilder() {
+            this.name = "John Doe";
+            this.age = 30;
+        }
+
+        public HumanBuilder setName(string name) {
+            this.name = name;
+            return this;
+        }
+
+        public HumanBuilder setAge(int age) {
+            this.age = age;
+            return this;
+        }
+
+        public Human getHuman() {
+            return Human(this);
+        }
+    }
+    ```
