@@ -3,7 +3,7 @@ Design Pattern 筆記
 
 # Creational Pattern
 目的 <br>
-- 抽象化 instantiation 的工序。令系統獨立於創造、構建物件（object）
+- 抽出／抽象化 instantiation 的工序。令系統獨立於創造、構建物件（object）
 
 要點 <br>
 1. 隱藏（encapsulate）系統需要使用的 classes
@@ -16,63 +16,110 @@ Design Pattern 筆記
 
 ## Factory Method
 ### 目的
-先範創造方法，再由 subclass 決定創造 object 的詳細方法 (implementation)
+先範創造方法，再由 subclass 決定如何創造（implementation）object（將 instantiation 的責任交至 subclass） 
 
 ### 使用時機
-1. 系統並不知道需要創造哪些 object
-2. 系統希望由 subclass 決定創造哪些 objectA
-
+1. 在程式執行前，系統並不知道需要創造哪些 object
+2. 希望由 subclass 決定創造哪些 object
 
 ### UML
 
 
 ### 例子
 ```java
+// product
+interface Student {
+    public void study();
+}
 
- 
+// concret product
+class SmartStudent implements Student{
+    public void study() {
+        System.out.println("I don't need to study.");
+    }
+}
+
+class LazyStudent implements Student{
+    public void study() {
+        System.out.println("I don't want to study.");
+    }
+}
+
+// creator
+abstract class Parent {
+    abstract Student createStudent();
+
+    public void yell() {
+        Student student = this.createStudent();
+        System.out.println("Go study!");
+        student.study();
+    }
+}
+
+// concret creator 
+abstract class SmartParent extends Parent{
+    abstract Student createStudent() {
+        return new SmartStudent();
+    };
+}
+
+abstract class LazyParent extends Parent{
+    abstract Student createStudent() {
+        return new LazyParent();
+    };
+}
+
+```
+```java
+Parent smartP = new SmartParent();
+smartP.yell();
 ```
 
 ## Abstract Factory
 ### 目的
-- 規範化創造一系列相關、同屬的 object 的方法
-- 使用方毋須知道「產品」的創造者／細節
+- 規範化建立一系列相關、同屬的 object 的方法
+- 使用方毋須知道「產品」的建立細節
 > Provide an interface for creating families of related or dependent objects without specifying their concrete classes. 
 
 ### 使用時機
-1. 系統毋須知道「產品」的創造方法、詳細
+1. 系統毋須知道「產品」的建立方法、詳細
 2. 同屬「產品」須同時使用
-3. 使用者毋須知道創造「產品」的 implementation
+3. 使用者毋須知道建立「產品」的 implementation
 
 ### UML
 ![圖片](https://user-images.githubusercontent.com/71750702/221368481-fdf64fcd-786c-4a8e-a32c-f080c9560f93.png)
 
 ### 例子
 ```java
-interface CarAbstractFactory {
-  public Car createWheel();
+interface CarComponentFactory {
+  public Wheel createWheel();
   public Engine createEngine();
 }
 
-class JapanCarFactory implements CarAbstractFactory {
-   public Car createTier() {
+class JpCarComponentFactory implements CarComponentFactory {
+   public Wheel createWheel() {
       return new JapanWheel();
    }
    
-   public Engin createEngine() {
+   public Engine createEngine() {
       return new JapanEngine();
    };
 }
 
-class USACarFactory implements CarAbstractFactory {
-   public Car createWheel() {
+class UsaCarComponentFactory implements CarComponentFactory {
+   public Wheel createWheel() {
       return new USAWheel();
    }
    
-   public Engin createEngine() {
+   public Engine createEngine() {
       return new USAEngine();
    };
 } 
  
+```
+```java
+CarComponentFactory factory = new JpCarComponentFactory();
+Car car = Car(factory.createWheel(), factory.createEngine());
 ```
 
 ## Builder
@@ -170,3 +217,9 @@ class USACarFactory implements CarAbstractFactory {
         }
     }
     ```
+```java
+Human human = HumanBuilder()
+                .setName("Peter")
+                .setAge(20)
+                .getHuman()
+```
