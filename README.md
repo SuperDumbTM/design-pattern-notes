@@ -15,11 +15,13 @@ Design Pattern 筆記
 > Consequently, the creational patterns give you a lot of flexibility in what gets created, who creates it, how it gets created, and when.
 
 ## Factory Method
-### 目的
-先範創造方法，再由 subclass 決定如何創造（implementation）object（將 instantiation 的責任交至 subclass） 
+### 簡介／目的
+*由 subclass 決定建立 object 的邏輯*
+
+- 先規範建立 object 的 function，再由 subclass 決定如何創造（implementation）object。即是將 instantiation 的責任交至 subclass。
 
 ### 使用時機
-1. 在程式執行前，系統並不知道需要創造哪些 object
+1. 一系列的 function 能接受不同類别的 object 執行其 logic／action 而達到不同結果
 2. 希望由 subclass 決定創造哪些 object
 
 ### UML
@@ -76,15 +78,17 @@ smartP.yell();
 ```
 
 ## Abstract Factory
-### 目的
-- 規範化建立一系列相關、同屬的 object 的方法
+### 簡介／目的
+*為同一系列、相關的 object 定立規範*
+
+- 實際要被建立的 object 在執行時（runtime）才會知道
 - 使用方毋須知道「產品」的建立細節
 > Provide an interface for creating families of related or dependent objects without specifying their concrete classes. 
 
 ### 使用時機
-1. 系統毋須知道「產品」的建立方法、詳細
-2. 同屬「產品」須同時使用
-3. 使用者毋須知道建立「產品」的 implementation
+1. 同屬 object 須同時使用（dependency）
+2. 統一 object 嘅 rules 及 dependencies
+3. > decouple client from a concrete class
 
 ### UML
 ![圖片](https://user-images.githubusercontent.com/71750702/221368481-fdf64fcd-786c-4a8e-a32c-f080c9560f93.png)
@@ -123,12 +127,15 @@ Car car = Car(factory.createWheel(), factory.createEngine());
 ```
 
 ## Builder
-### 目的
-將建立／創造複雜的 object 抽離，使得相同的「工序」能建立擁有不同設置／參數的 object
+### 簡介／目的
+*將建立一個 object 分成不同步驟*<br>
+
+- 透過將建立／創造複雜的 object 抽出成不同步驟（function），使得相同的「工序」能建立擁有不同設置／參數的 object
+> Separate the construction of a complex object from its representation so that the sam construction process can create different representations
 
 ### 使用時機
-1. 建立 object 的邏輯（logic, algorithm）應獨立於 object 本身的建構方式（construct）及其參數（parameters）
-2. 可建立擁有不同設置／參數的 object
+1. 建立 object 的邏輯複雜，例如有大量參數（parameter）
+2. 需方便地建立擁有不同設置／參數的 object
 
 
 ### UML
@@ -223,3 +230,5 @@ Human human = HumanBuilder()
                 .setAge(20)
                 .getHuman()
 ```
+
+注：可設立一個 base class 用作提供預設 implementation，再以 inheritance 改寫有關邏輯。
