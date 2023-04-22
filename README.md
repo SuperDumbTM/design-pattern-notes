@@ -560,7 +560,7 @@ N/A
 
 
 ### UML
-N/A
+![圖片](https://user-images.githubusercontent.com/71750702/233792781-d1f32a92-a1e8-483b-81a4-4df3b85b9ada.png)
 
 ### 例子
 
